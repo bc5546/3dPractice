@@ -22,10 +22,12 @@ public class PlayerController : MonoBehaviour
 
 
     private Rigidbody rigidbody;
+    private Animator animator;
 
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
     }
     // Start is called before the first frame update
     void Start()
@@ -49,8 +51,9 @@ public class PlayerController : MonoBehaviour
         Vector3 dir = transform.forward * curMovementInput.y + transform.right * curMovementInput.x;
         dir *= moveSpeed;
         dir.y = rigidbody.velocity.y;
-
         rigidbody.velocity = dir;
+        animator.SetFloat("X",curMovementInput.x);
+        animator.SetFloat("Y",curMovementInput.y);
     }
 
     void CameraLook()
@@ -67,10 +70,12 @@ public class PlayerController : MonoBehaviour
         if (context.phase == InputActionPhase.Performed)
         {
             curMovementInput = context.ReadValue<Vector2>();
+            animator.SetBool("Move", true);
         }
         else if (context.phase == InputActionPhase.Canceled)
         {
             curMovementInput = Vector2.zero;
+            animator.SetBool("Move", false);
         }
     }
 
@@ -83,7 +88,11 @@ public class PlayerController : MonoBehaviour
     {
         if (context.phase == InputActionPhase.Started && IsGrounded())
         {
-            rigidbody.AddForce(Vector2.up * jumpPower, ForceMode.Impulse);
+            if (CharacterManager.Instance.player.condition.CanJump() == true)
+            {
+                rigidbody.AddForce(Vector2.up * jumpPower, ForceMode.Impulse);
+                animator.SetTrigger("Jump");
+            }
         }
     }
 
