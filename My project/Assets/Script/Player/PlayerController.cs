@@ -20,6 +20,9 @@ public class PlayerController : MonoBehaviour
     public float lookSensitivity;
     private Vector2 mouseDelta;
 
+    [Header("Fall")]
+    public bool isFalling = false;
+
 
     private Rigidbody rigidbody;
     private Animator animator;
@@ -39,6 +42,14 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         Move();
+        if (isFalling)
+        {
+            if (IsGrounded()) 
+            {
+                animator.SetBool("Drop", false);
+                isFalling = false;
+            }
+        }
     }
 
     private void LateUpdate()
@@ -113,5 +124,17 @@ public class PlayerController : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public void Drop()
+    {
+        animator.SetBool("Drop", true);
+        Invoke("SetIsFalling", 1);
+        
+    }
+
+    void SetIsFalling()
+    {
+        isFalling = true;
     }
 }
