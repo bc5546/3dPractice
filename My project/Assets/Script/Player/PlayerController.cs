@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("ViewPoint")]
     public bool isThirdView = true;
-    public GameObject camera;
+    public GameObject aim;
 
 
     private Rigidbody rigidbody;
@@ -149,12 +149,14 @@ public class PlayerController : MonoBehaviour
             if (isThirdView == true)
             {
                 isThirdView = false;
-                camera.transform.Translate(new Vector3(0, -0.2f, 3));
+                Camera.main.transform.Translate(new Vector3(0, -0.2f, 3));
+                aim.SetActive(true);
             }
             else
             {
                 isThirdView= true;
-                camera.transform.Translate(new Vector3(0, 0.2f, -3));
+                Camera.main.transform.Translate(new Vector3(0, 0.2f, -3));
+                aim.SetActive(false);
             }
         }
     }
