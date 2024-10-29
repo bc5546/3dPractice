@@ -23,6 +23,10 @@ public class PlayerController : MonoBehaviour
     [Header("Fall")]
     public bool isFalling = false;
 
+    [Header("ViewPoint")]
+    public bool isThirdView = true;
+    public GameObject camera;
+
 
     private Rigidbody rigidbody;
     private Animator animator;
@@ -136,5 +140,22 @@ public class PlayerController : MonoBehaviour
     void SetIsFalling()
     {
         isFalling = true;
+    }
+
+    public void OnViewChange(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            if (isThirdView == true)
+            {
+                isThirdView = false;
+                camera.transform.Translate(new Vector3(0, -0.2f, 3));
+            }
+            else
+            {
+                isThirdView= true;
+                camera.transform.Translate(new Vector3(0, 0.2f, -3));
+            }
+        }
     }
 }
