@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 curMovementInput;
     public LayerMask groundLayerMask;
     public bool isRunning=false;
+    public GameObject curGround;
 
 
     [Header("Look")]
@@ -67,6 +68,14 @@ public class PlayerController : MonoBehaviour
         Vector3 dir = transform.forward * curMovementInput.y + transform.right * curMovementInput.x;
         dir *= moveSpeed;
         dir.y = rigidbody.velocity.y;
+        if (IsGrounded())
+        {
+            gameObject.transform.parent = curGround.transform;
+        }
+        else
+        {
+            gameObject.transform.parent = null;
+        }
         rigidbody.velocity = dir;
         animator.SetFloat("X",curMovementInput.x);
         animator.SetFloat("Y",curMovementInput.y);
@@ -123,8 +132,10 @@ public class PlayerController : MonoBehaviour
         };
         for (int i = 0; i < rays.Length; i++)
         {
-            if (Physics.Raycast(rays[i], 0.1f, groundLayerMask))
+            RaycastHit hit;
+            if (Physics.Raycast(rays[i], out hit, 0.1f, groundLayerMask))
             {
+                curGround = hit.collider.gameObject;
                 return true;
             }
         }
