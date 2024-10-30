@@ -21,6 +21,7 @@ public class Interaction : MonoBehaviour
     void Start()
     {
         camera = Camera.main;
+        CharacterManager.Instance.player.getItem += GetItem;
     }
 
     // Update is called once per frame
@@ -72,5 +73,28 @@ public class Interaction : MonoBehaviour
             curInteractable = null;
             promptText.gameObject.SetActive(false);
         }
+    }
+
+    public void GetItem()
+    {
+        switch(CharacterManager.Instance.player.itemData.consumables.type)
+        {
+            case ConsumableType.Speed:
+                StartCoroutine(SpeedBoost(CharacterManager.Instance.player.itemData.consumables.value));
+                break;
+            case ConsumableType.Health:
+                break;
+        }
+    }
+
+    IEnumerator SpeedBoost(float value)
+    {
+        GetComponent<PlayerController>().isRunning = true;
+        GetComponent<PlayerController>().moveSpeed += value;
+        GetComponent<Animator>().SetBool("Run", true);
+        yield return new WaitForSeconds(10f);
+        GetComponent<PlayerController>().isRunning = false;
+        GetComponent<PlayerController>().moveSpeed -= value;
+        GetComponent<Animator>().SetBool("Run", false);
     }
 }

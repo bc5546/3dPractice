@@ -23,7 +23,7 @@ public class ItemObject : MonoBehaviour, Iinteractable
         if (itemData.type != ItemType.Structure)
         {
             CharacterManager.Instance.player.itemData = itemData;
-            CharacterManager.Instance.player.addItem?.Invoke();
+            CharacterManager.Instance.player.getItem?.Invoke();
             Destroy(gameObject);
         }
     }

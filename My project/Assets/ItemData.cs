@@ -14,7 +14,7 @@ public enum ItemType
 public enum ConsumableType
 {
     Health,
-    Hunger
+    Speed
 }
 
 [Serializable]
@@ -38,7 +38,7 @@ public class ItemData : ScriptableObject
     public int maxStackAmount;
 
     [Header("Consumable")]
-    public ItemDataCousumable[] consumables;
+    public ItemDataCousumable consumables;
 
     [Header("Getable")]
     public bool getable;
